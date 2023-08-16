@@ -6,13 +6,15 @@
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col">
         <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
+     
           <div class="card-body py-4 px-4 px-md-5">
 
             <p class="h1 text-center mt-3 mb-4 pb-3 text-primary">
                  
               <span>Open Chat</span>
+              
             </p>
-
+           
             <form action="" method="POST">
                  {% csrf_token %}
                  <div class="pb-2">
@@ -29,6 +31,8 @@
                       </div>
                     </div>
             </form>
+
+    
             
 
             <hr class="my-4">
@@ -40,12 +44,15 @@
                 class="list-group-item d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
                 <form method="POST" action="{% url 'edit-todo' todo.id %}">
                  {% csrf_token %}
-                 <div class="form-check">
+                 <!-- <div class="form-check">
                      <input class="form-check-input me-0" type="checkbox" value="" id="flexCheckChecked1"
                          aria-label="..." {% if todo.is_completed %}checked{% endif %} onchange="this.form.submit()" />
                      <button type="submit" class="btn btn-link text-info" data-mdb-toggle="tooltip" title="Save todo">
                          
                      </button>
+                 </div> -->
+                 <div>
+                  <img src="https://ui-avatars.com/api/?background=random&name={{ todo.user.username }}" width="40px" class="rounded-pill" alt="">
                  </div>
              </form>
               </li>
@@ -57,13 +64,17 @@
             </li>
             <li class="list-group-item ps-3 pe-0 py-1 rounded-0 border-0 bg-transparent">
                  <div class="d-flex flex-row justify-content-end mb-1">
-                      
+                  {% if todo.user.id == request.user.id %}
                   <a href="{% url 'delete-todo' todo.id %}" class="text-danger" data-mdb-toggle="tooltip" title="Delete todo"><i
                       class="fas fa-trash-alt"></i></a>
+                   {% else %}   
+                   <a href="{% url 'delete-todo' todo.id %}" class="text-danger" data-mdb-toggle="tooltip" title="Delete todo"><i
+                    class="fas fa-tash-alt"></i></a>
+                   {% endif %}   
                 </div>
                 <div class="text-end text-muted">
                   <a href="#!" class="text-muted small" style="text-decoration: none" data-mdb-toggle="tooltip" title="Created date">
-                    <p class="small mb-0">{{ todo.user|lower }} ~ {{ todo.created_at }}</p>
+                    <p class="small mb-0">{% if todo.user == request.user %}<span class="text-primary">@you</span>{% else %}@{{ todo.user|lower }}{% endif %} ~ {{ todo.created_at }}</p>
                   </a>
                 </div>
               </li>
@@ -74,7 +85,7 @@
             </div>
             {% endfor %}
             <div class="justify-content-end">
-              <a href="{% url 'logout' %}" class="btn btn-danger mt-3">Logout</a>
+              <a href="{% url 'logout' %}" class="btn btn-danger mt-3">Logout {{ request.user.username|title }}</a>
             </div>
           </div>
          

@@ -5,12 +5,11 @@
 {% block content %}
 {% if not user.is_authenticated %}
 <div class="container">
-     <br><br><br><br><br><br><br><br>
         <div class="row justify-content-center">
           <div class="col-md-6 col-lg-5">
             <div class="login-wrap p-4 p-md-5">
               <div class="icon d-flex align-items-center justify-content-center">
-                <span class="fs-1 fw-bold font-monospace">LOGIN</span>
+                <span class="fs-1 fw-bold font-monospace">Login</span>
               </div>
               <form action="" method="POST" class="login-form">
                    {% csrf_token %}
@@ -40,6 +39,11 @@
                     Login
                   </button>
                 </center>
+                <br>
+                <center>
+                  <a href="{% url 'register' %}">Register new Account?</a>
+                </center>
+                
                   
               </form>
             </div>

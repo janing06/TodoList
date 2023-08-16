@@ -10,4 +10,5 @@ urlpatterns = [
      path('edit-todo/<id>', views.edit_todo, name='edit-todo'),
      path('login/', views.login, name='login'),
      path('logout/', LogoutView.as_view(), name='logout'),
+     path('register/', views.register, name='register'),
 ]
