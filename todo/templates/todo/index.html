@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+     <title>Todo</title>
+</head>
+<style>
+    
+     #list1 .form-control {
+          border-color: transparent;
+        }
+        #list1 .form-control:focus {
+          border-color: transparent;
+          box-shadow: none;
+        }
+        #list1 .select-input.form-control[readonly]:not([disabled]) {
+          background-color: #fbfbfb;
+        }
+     
+</style>
+<body>
+     <section class="">
+          <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+              <div class="col">
+                <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
+                  <div class="card-body py-4 px-4 px-md-5">
+        
+                    <p class="h1 text-center mt-3 mb-4 pb-3 text-primary">
+                         
+                      <span>Todo-List</span>
+                    </p>
+        
+                    <form action="" method="POST">
+                         {% csrf_token %}
+                         <div class="pb-2">
+                              <div class="card">
+                                <div class="card-body">
+                                  <div class="d-flex flex-row align-items-center">
+                                    <input type="text" class="form-control form-control-lg" required name="task" id="exampleFormControlInput1"
+                                      placeholder="Add new...">
+                                    <div>
+                                      <button type="submit" class="btn btn-primary">Add</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                    </form>
+                    
+        
+                    <hr class="my-4">
+        
+               
+                    {% for todo in todos %}
+                    <ul class="list-group list-group-horizontal rounded-0 bg-transparent" style="border-bottom: 1px solid #d1d1d1;">
+                      <li
+                        class="list-group-item d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
+                        <form method="POST" action="{% url 'edit-todo' todo.id %}">
+                         {% csrf_token %}
+                         <div class="form-check">
+                             <input class="form-check-input me-0" type="checkbox" value="" id="flexCheckChecked1"
+                                 aria-label="..." {% if todo.is_completed %}checked{% endif %} onchange="this.form.submit()" />
+                             <button type="submit" class="btn btn-link text-info" data-mdb-toggle="tooltip" title="Save todo">
+                                 
+                             </button>
+                         </div>
+                     </form>
+                      </li>
+                      <li
+                        class="list-group-item px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
+                        <p class="lead fw-normal mb-0 {% if todo.is_completed == True %}text-decoration-line-through{% endif  %}" id="todo-name">{{ todo.name }}</p>
+                        <input type="text" id="edit-input" style="display: none;">
+                         <button type="submit" style="display: none;"></button>
+                    </li>
+                    <li class="list-group-item ps-3 pe-0 py-1 rounded-0 border-0 bg-transparent">
+                         <div class="d-flex flex-row justify-content-end mb-1">
+                              
+                          <a href="{% url 'delete-todo' todo.id %}" class="text-danger" data-mdb-toggle="tooltip" title="Delete todo"><i
+                              class="fas fa-trash-alt"></i></a>
+                        </div>
+                        <div class="text-end text-muted">
+                          <a href="#!" class="text-muted small" data-mdb-toggle="tooltip" title="Created date">
+                            <p class="small mb-0">{{ todo.created_at }}</p>
+                          </a>
+                        </div>
+                      </li>
+                    </ul>
+                    {% empty %}
+                    <div class="text-center">
+                         No todo task.
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      <br>
+     <script src="{% static 'bootstrap/css/bootstrap.min.js' %}"></script>
+   
+     <script>
+          document.addEventListener("DOMContentLoaded", function () {
+              const editButton = document.getElementById("edit-button");
+              const saveButton = document.getElementById("save-button");
+              const todoName = document.getElementById("todo-name");
+              const editInput = document.getElementById("edit-input");
+          
+              editButton.addEventListener("click", function () {
+                  editButton.style.display = "none";
+                  saveButton.style.display = "block";
+                  todoName.style.display = "none";
+                  editInput.style.display = "inline";
+                  editInput.value = todoName.textContent;
+              });
+          
+              saveButton.addEventListener("click", function () {
+                  editButton.style.display = "block";
+                  saveButton.style.display = "none";
+                  todoName.style.display = "inline";
+                  editInput.style.display = "none";
+                  todoName.textContent = editInput.value;
+              });
+          });
+          </script>
+</body>
+</html>
